@@ -11,6 +11,11 @@ for root, dirs, files in os.walk(folder):
 
 
 counter = 0
+print(f'Введите слово')
+text = input()
+text = text.lower()
+print(f'Ищу - {text}')
+mydoc = docx.Document()
 for path in paths:  
     doc = docx.Document(path)
     properties = doc.core_properties
@@ -20,21 +25,23 @@ for path in paths:
     # print('Дата последней правки:', properties.modified)
     # print('Дата последней печати:', properties.last_printed)
     # print('Количество сохранений:', properties.revision)
-    text = []
     for paragraph in doc.paragraphs:
         # index = paragraph.text.find("Сочетанная")
         # if index > -1:      
-        if 'еморрой' in paragraph.text:
+        if text in paragraph.text.lower():
             counter += 1    
             # filename = os.path.basename(path)
             # file_name = path.split(".")[0]
             file_name_with_extension = path.split("/")[-1]
             file_name = file_name_with_extension.split(".")[0]
-            url = f'{file_name}_gemor.docx'            
-            doc.save(url)  
-            print(f'{file_name}_gemor')
+            url = f'{file_name}_диклофенак.docx'  
+            mydoc.add_paragraph(file_name)          
+            # doc.save(url)  
+            print(f'{file_name}_диклофенак')
             print(counter)
             break
+mydoc.add_paragraph(f'Найдено совпадений - {counter}')       
+mydoc.save("result.docx")
 
 
 # from glob import glob
